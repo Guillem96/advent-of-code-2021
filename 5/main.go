@@ -64,10 +64,6 @@ func (l Line) IsHorizontal() bool {
 	return l.p1.y == l.p2.y
 }
 
-func (l Line) Slope() float32 {
-	return float32(l.p2.y-l.p1.y) / float32(l.p2.x-l.p1.x)
-}
-
 type Grid struct {
 	danger map[Point]int
 }
