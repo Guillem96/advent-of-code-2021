@@ -9,26 +9,6 @@ import (
 	"strings"
 )
 
-const (
-	Top         uint = 0x1
-	TopLeft     uint = 0x2
-	TopRight    uint = 0x4
-	Center      uint = 0x8
-	BottomLeft  uint = 0x10
-	BottomRight uint = 0x20
-	Bottom      uint = 0x40
-)
-
-const (
-	A = iota
-	B
-	C
-	D
-	E
-	F
-	G
-)
-
 type StringSet string
 
 func (ss StringSet) Equals(o StringSet) bool {
