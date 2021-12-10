@@ -21,18 +21,12 @@ func (t Token) IsClosing() bool {
 }
 
 func (t Token) CloseRespective() Token {
-	if t == '{' {
-		return Token('}')
-	} else if t == '[' {
-		return Token(']')
-	} else if t == '(' {
-		return Token(')')
-	} else if t == '<' {
-		return Token('>')
-	} else {
-		log.Fatalf("Invalid open token: %s", string(t))
-		return Token('o')
-	}
+	return map[rune]Token{
+		'(': Token(')'),
+		'{': Token('}'),
+		'[': Token(']'),
+		'<': Token('>'),
+	}[rune(t)]
 }
 
 func (t Token) OpenRespective() Token {
@@ -134,7 +128,6 @@ func Part2(scanner *bufio.Scanner) (res int) {
 			ls = SortedInsert(ls, score)
 		}
 	}
-	fmt.Printf("%+v\n", ls)
 	return ls[int(math.Floor(float64(len(ls))/2.0))]
 }
 
