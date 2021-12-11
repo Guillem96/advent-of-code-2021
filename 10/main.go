@@ -137,6 +137,6 @@ func main() {
 		log.Fatal(err)
 	}
 	scanner := bufio.NewScanner(f)
-	fmt.Println("Result part 1:", Part1(scanner))
+	// fmt.Println("Result part 1:", Part1(scanner))
 	fmt.Println("Result part 2:", Part2(scanner))
 }
