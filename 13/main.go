@@ -108,7 +108,7 @@ func (tp TransparentPaper) ApplyFolds(limit int) TransparentPaper {
 		for p := range ntp.Points {
 			nps[p.ApplyFold(fi)] = true
 		}
-		ntp = TransparentPaper{Points: nps, FoldIns: tp.FoldIns[limit:]}
+		ntp = TransparentPaper{Points: nps, FoldIns: ntp.FoldIns[1:]}
 	}
 	return ntp
 }
