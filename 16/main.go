@@ -19,17 +19,6 @@ func (b Binary) Int() (v int) {
 	return
 }
 
-func (b Binary) Print() {
-	for _, bin := range b {
-		if bin {
-			fmt.Print("1")
-		} else {
-			fmt.Print("0")
-		}
-	}
-	fmt.Printf(" (%d)\n", b.Int())
-}
-
 func BinaryMapping(c byte) []bool {
 	return map[byte][]bool{
 		'0': {false, false, false, false},
@@ -118,17 +107,12 @@ func ParsePacket(b *Binary) Packet {
 
 func ParseLiteralValue(b *Binary) int {
 	literal := make(Binary, 0)
-	if !(*b)[0] {
-		literal = append(literal, (*b)[1:5]...)
-		(*b) = (*b)[5:]
-	} else {
-		for (*b)[0] {
-			literal = append(literal, (*b)[1:5]...)
-			(*b) = (*b)[5:]
-		}
+	for (*b)[0] {
 		literal = append(literal, (*b)[1:5]...)
 		(*b) = (*b)[5:]
 	}
+	literal = append(literal, (*b)[1:5]...)
+	(*b) = (*b)[5:]
 	return literal.Int()
 }
 
@@ -214,18 +198,9 @@ func SolveOperator(p Packet) Packet {
 	}
 }
 
-func ParseHierarchy(tx Binary) []Packet {
-	ps := make([]Packet, 0)
-	lbs := tx
-	for len(lbs) > 8 {
-		ps = append(ps, ParsePacket(&lbs))
-	}
-	return ps
-}
-
 func main() {
 	tx := ReadTransmission("input.txt")
-	hr := ParseHierarchy(tx)
-	fmt.Println("Part 1 result:", SumVersions(hr))
-	fmt.Println("Part 2 result:", SolveOperator(hr[0]))
+	hr := ParsePacket(&tx)
+	fmt.Println("Part 1 result:", SumVersions([]Packet{hr}))
+	fmt.Println("Part 2 result:", SolveOperator(hr).Literal)
 }
