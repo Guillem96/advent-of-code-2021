@@ -81,7 +81,6 @@ func (n *Number) Explode(level int) bool {
 
 	if level == 4 {
 		v := make(map[*Number]bool)
-		v[n.Parent] = true
 		v[n] = true
 		ln := n.Parent.FindClosestLeft(v)
 		if ln != nil {
@@ -91,7 +90,6 @@ func (n *Number) Explode(level int) bool {
 		}
 
 		v = make(map[*Number]bool)
-		v[n.Parent] = true
 		v[n] = true
 		rn := n.Parent.FindClosestRight(v)
 		if rn != nil {

@@ -1,0 +1,46 @@
+Explanation: https://github.com/dphilipson/advent-of-code-2021/blob/master/src/days/day24.rs
+
+The values of {CHECK},{OFFSET} for the 14 sets in my problem input are:
+    12, 9
+    12, 4
+    12, 2
+    -9, 5
+    -9, 1
+    14, 6
+    14, 11
+    -10, 15
+    15, 7
+    -2, 12
+    11, 15
+    -15, 9
+    -9, 12
+    -3, 12
+
+so translated to the mental model above, this is the following:
+    PUSH input[0] + 9
+    PUSH input[1] + 4
+    PUSH input[2] + 2
+    POP. Must have input[3] == popped_value - 9
+    POP. Must have input[4] == popped_value - 9
+    PUSH input[5] + 6
+    PUSH input[6] + 11
+    POP. Must have input[7] == popped_value - 10
+    PUSH input[8] + 7
+    POP. Must have input[9] == popped_value - 2
+    PUSH input[10] + 15
+    POP. Must have input[11] == popped_value - 15
+    POP. Must have input[12] == popped_value - 9
+    POP. Must have input[13] == popped_value - 3
+
+By playing out the stack operations, we arrive at the following requirements for
+all pops to succeed:
+    input[3] = input[2] - 7
+    input[4] = input[1] - 5
+    input[7] = input[6] + 1
+    input[9] = input[8] + 5
+    input[11] = input[10]
+    input[12] = input[5] - 3
+    input[13] = input[0] + 6
+
+Max = 39924989499969
+Min = 16811412161117
