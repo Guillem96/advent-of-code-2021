@@ -7,19 +7,20 @@ module CoordCompression
 where
 
 import qualified Data.List as List
-import qualified Data.Map as Map
-import Position
+import qualified Data.Map  as Map
+import           Position  (Position (..))
 
 data CoordinateCompression2D = CoordinateCompression2D
   { xmap :: Map.Map Int Int,
     ymap :: Map.Map Int Int,
-    xs :: [Int],
-    ys :: [Int]
+    xs   :: [Int],
+    ys   :: [Int]
   }
   deriving (Show)
 
 fromCoords :: [Position] -> CoordinateCompression2D
-fromCoords ps = CoordinateCompression2D (Map.fromList isxs) (Map.fromList isys) sxs sys
+fromCoords ps =
+  CoordinateCompression2D (Map.fromList isxs) (Map.fromList isys) sxs sys
   where
     sxs = List.sort [x | (Position2D x _) <- ps]
     sys = List.sort [y | (Position2D _ y) <- ps]

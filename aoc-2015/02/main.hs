@@ -1,4 +1,4 @@
-import Data.List.Split
+import           Data.List.Split
 
 data Present = Present {l :: Int, w :: Int, h :: Int}
 
@@ -6,11 +6,11 @@ parsePresent :: String -> Maybe Present
 parsePresent s = createPresent [read x :: Int | x <- splitOn "x" s]
   where
     createPresent [l, w, h] = Just Present {l = l, w = w, h = h}
-    createPresent _ = Nothing
+    createPresent _         = Nothing
 
 requiredWrappingPaper :: Maybe Present -> Int
 requiredWrappingPaper (Just p) = surface p + minSurface p
-requiredWrappingPaper Nothing = 0
+requiredWrappingPaper Nothing  = 0
 
 requiredRibbon :: Maybe Present -> Int
 requiredRibbon (Just p) = volume p + add (shortEdges p)
@@ -48,8 +48,6 @@ part1Str = show . part1 . parseFile
 part2Str = show . part2 . parseFile
 
 main = do
-  readFile "input.txt" >>= \s ->
-    putStrLn $
-      "Required wrapping papper: " ++ part1Str s
-        ++ "\nRequired ribbon: "
-        ++ part2Str s
+  f <- readFile "input.txt"
+  putStrLn $ "Required wrapping papper: " ++ part1Str f
+  putStrLn $ "Required ribbon: " ++ part2Str f

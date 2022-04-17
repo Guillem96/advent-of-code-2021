@@ -8,13 +8,13 @@ contains3vowels::String -> Bool
 contains3vowels ss = sum [count v ss | v <- "aeiou"] >= 3
 
 repeatedLetter::String -> Bool
-repeatedLetter [] = False
-repeatedLetter [x] = False
+repeatedLetter []       = False
+repeatedLetter [x]      = False
 repeatedLetter (x:y:xs) = x == y || repeatedLetter (y:xs)
 
 containsForbidden::String -> Bool
-containsForbidden [] = False
-containsForbidden [x] = False
+containsForbidden []       = False
+containsForbidden [x]      = False
 containsForbidden (x:y:xs) = elem [x, y] forbidden || containsForbidden (y:xs)
 
 isnice::String -> Bool
@@ -34,9 +34,9 @@ containsRepeatedPair s = or [count p chunked >= 2 | p <- chunked]
     chunked = chunks s
 
 containsSandwitch::String -> Bool
-containsSandwitch [] = False
-containsSandwitch [_] = False
-containsSandwitch [_, _] = False
+containsSandwitch []         = False
+containsSandwitch [_]        = False
+containsSandwitch [_, _]     = False
 containsSandwitch (x:y:z:ns) = x == z || containsSandwitch (y:z:ns)
 
 isnice'::String -> Bool
@@ -49,5 +49,6 @@ part2::String -> String
 part2 = (++) "Part 2 - Number nice words: " . show . length . filter isnice' . lines
 
 main = do
-  readFile "input.txt" >>= print . part1
-  readFile "input.txt" >>= print . part2
+  f <- readFile "input.txt"
+  print $ part1 f
+  print $ part2 f

@@ -1,4 +1,4 @@
-import Data.Set as Set
+import           Data.Set as Set
 
 type Point = (Int, Int)
 
@@ -7,7 +7,7 @@ move '>' (x, y) = (x + 1, y)
 move '<' (x, y) = (x - 1, y)
 move '^' (x, y) = (x, y - 1)
 move 'v' (x, y) = (x, y + 1)
-move _ p = p
+move _ p        = p
 
 part1 :: Point -> Set Point -> String -> Int
 part1 pos set (i : is) = part1 nextPos newSet is
@@ -33,8 +33,6 @@ part1Str = show . part1 (0, 0) Set.empty
 part2Str = show . part2 (0, 0) (0, 0) 0 Set.empty
 
 main = do
-  readFile "input.txt" >>= \s ->
-    putStrLn $
-      "Part 1 at least one gift houses: " ++ part1Str s
-        ++ "\nPart 2 at least one gift houses: "
-        ++ part2Str s
+  f <- readFile "input.txt"
+  putStrLn $  "Part 1 at least one gift houses: " ++ part1Str f
+  putStrLn $  "nPart 1 at least one gift houses: " ++ part2Str f
