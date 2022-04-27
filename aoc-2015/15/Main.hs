@@ -1,10 +1,8 @@
-import Control.Exception (evaluate)
-
 data Ingredient = Ingredient {
   name::String,
-  capacity::Int, 
-  durability::Int, 
-  flavor::Int, 
+  capacity::Int,
+  durability::Int,
+  flavor::Int,
   texture::Int,
   calories::Int
 }
@@ -23,53 +21,45 @@ parseFile :: String -> [Ingredient]
 parseFile = map ingredientFromLine . lines
 
 evaluateRecipe :: [(Ingredient, Int)] -> Int
-evaluateRecipe is = let cs = sum [c * q | (Ingredient _ c _ _ _ _, q) <- is]
-                        ds = sum [d * q | (Ingredient _ _ d _ _ _, q) <- is]
-                        fs = sum [f * q | (Ingredient _ _ _ f _ _, q) <- is]
-                        ts = sum [t * q | (Ingredient _ _ _ _ t _, q) <- is]
+evaluateRecipe is = let cs = sum [capacity i * q | (i, q) <- is]
+                        ds = sum [durability i * q | (i, q) <- is]
+                        fs = sum [flavor i * q | (i, q) <- is]
+                        ts = sum [texture i * q | (i, q) <- is]
                         isValid = all (>0) [cs, ds, fs, ts]
                     in if isValid then cs * ds * fs * ts else -1
 
 evaluateRecipe' :: [(Ingredient, Int)] -> Int
-evaluateRecipe' is = let cs = sum [c * q | (Ingredient _ c _ _ _ _, q) <- is]
-                         ds = sum [d * q | (Ingredient _ _ d _ _ _, q) <- is]
-                         fs = sum [f * q | (Ingredient _ _ _ f _ _, q) <- is]
-                         ts = sum [t * q | (Ingredient _ _ _ _ t _, q) <- is]
-                         cals = sum [cal * q | (Ingredient _ _ _ _ _ cal, q) <- is]
+evaluateRecipe' is = let cs = sum [capacity i * q | (i, q) <- is]
+                         ds = sum [durability i * q | (i, q) <- is]
+                         fs = sum [flavor i * q | (i, q) <- is]
+                         ts = sum [texture i * q | (i, q) <- is]
+                         cals = sum [calories i * q | (i, q) <- is]
                          isValid = all (>0) [cs, ds, fs, ts] && cals == 500
-                    in if isValid then cs * ds * fs * ts else -1
+                     in if isValid then cs * ds * fs * ts else -1
 
 sumTo :: Int
 sumTo = 100
 
 sumTo100Perms :: [[Int]]
-sumTo100Perms = go 1 (concat [f [i] | i <- [1..sumTo]])
+sumTo100Perms = go 0 [[i] | i <- [1..sumTo]]
   where
     go 4 acc = acc -- We only have 4 ingredients
-    go pos acc = go (pos + 1) (concatMap f acc)
-    f xs | length xs == 3 = [xs ++ [sumTo - sum xs]]
-         | length xs == 4 = [xs]
-         | otherwise = [xs ++ [i] | i <- [1..sumTo - sum xs]] 
+    go pos acc = go (pos + 1) (concatMap expand acc)
+    expand xs | length xs == 3 = [xs ++ [sumTo - sum xs]]
+              | length xs == 4 = [xs]
+              | otherwise = [xs ++ [i] | i <- [1..sumTo - sum xs]]
 
--- Part 1 evaluate functions
-evaluatePerm :: [Ingredient] -> [Int] -> Int
-evaluatePerm is = evaluateRecipe . zip is
+evaluatePerm :: [Ingredient] -> ([(Ingredient, Int)] -> Int) -> [Int] -> Int
+evaluatePerm is f = f . zip is
 
-evaluatePerms :: [Ingredient] -> [[Int]] -> [Int]
-evaluatePerms is = map (evaluatePerm is)
-
--- Part2 eval functions
-evaluatePerm' :: [Ingredient] -> [Int] -> Int
-evaluatePerm' is = evaluateRecipe' . zip is
-
-evaluatePerms' :: [Ingredient] -> [[Int]] -> [Int]
-evaluatePerms' is = map (evaluatePerm' is)
+evaluatePerms :: ([(Ingredient, Int)] -> Int) -> [[Int]] -> [Ingredient] -> [Int]
+evaluatePerms f perms is = map (evaluatePerm is f) perms
 
 part1 :: String -> Int
-part1 = maximum . flip evaluatePerms sumTo100Perms . parseFile
+part1 = maximum . evaluatePerms evaluateRecipe sumTo100Perms . parseFile
 
 part2 :: String -> Int
-part2 = maximum . flip evaluatePerms' sumTo100Perms . parseFile
+part2 = maximum . evaluatePerms evaluateRecipe' sumTo100Perms . parseFile
 
 main :: IO ()
 main = do
