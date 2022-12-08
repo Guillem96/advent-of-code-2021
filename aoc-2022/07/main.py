@@ -59,7 +59,7 @@ def read_puzzle_input(fname: str) -> Directory:
 
 def compute_dir_sizes(root: Directory) -> Mapping[str, int]:
     dir_sizes = {root.path: root.size()}
-    queue: List[Directory] = [root]
+    queue = [root]
 
     while queue:
         m = queue.pop(0)
